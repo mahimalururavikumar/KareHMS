@@ -16,6 +16,8 @@
     "bcryptjs": "^2.4.3",
     "config": "^3.3.12",
     "connect-flash": "^0.1.1",
+    "connect-mongo": "^5.1.0",
+    "connect-redis": "^7.1.1",
     "cookie-parser": "^1.4.7",
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
@@ -25,7 +27,8 @@
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.10.0",
     "mongoose": "^8.8.0",
-    "nodemon": "^3.1.7"
+    "nodemon": "^3.1.7",
+    "redis": "^4.7.0"
   },
   "devDependencies": {
     "cross-env": "^7.0.3"
