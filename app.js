@@ -50,7 +50,7 @@ app.use("/admin", adminRouter);
 app.use("/doctor", doctorRouter);
 
 // Start server
-const PORT = 3000;
+const PORT = 3000 || process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);
 });
