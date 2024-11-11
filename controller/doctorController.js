@@ -4,7 +4,7 @@ import appointmentModel from "../models/appointment-model.js";
 import doctorApplicationModel from "../models/doctorApplication-model.js";
 import doctorModel from "../models/doctor-model.js";
 import generateToken from "../utils/generateToken.js";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 const register = async (req, res) => {
   let { name, email, password } = req.body;

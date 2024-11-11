@@ -1,6 +1,6 @@
 import userModel from "../models/user-model.js";
 import adminModel from "../models/admin-model.js";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import generateToken from "../utils/generateToken.js";
 
 const Login =  async (req, res) => {
