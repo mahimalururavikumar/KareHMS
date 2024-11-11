@@ -1,7 +1,7 @@
 import express from "express";
 const router = express.Router();
 import isAdminAuthenticated from "../middleware/isItOwner.js";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import adminModel from "../models/admin-model.js";
 import {
   requestaccepted,
