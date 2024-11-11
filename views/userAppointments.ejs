@@ -1,0 +1,102 @@
+<%- include('partials/header') %>
+
+    <div class="flex flex-col md:flex-row min-h-screen bg-gray-100">
+        <div id="flash-messages" class="fixed top-4 right-4 z-50 space-y-2">
+            <% if (messages.success && messages.success.length > 0) { %>
+                <% messages.success.forEach(function(msg) { %>
+                    <div class="flash-message bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded-lg shadow-md transition-opacity duration-500">
+                        <p><%= msg %></p>
+                    </div>
+                <% }) %>
+            <% } %>
+        
+            <% if (messages.error && messages.error.length > 0) { %>
+                <% messages.error.forEach(function(msg) { %>
+                    <div class="flash-message bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded-lg shadow-md transition-opacity duration-500">
+                        <p><%= msg %></p>
+                    </div>
+                <% }) %>
+            <% } %>
+        </div>
+        <!-- Sidebar -->
+        <div
+            class="flex flex-col w-full md:w-1/5 h-auto md:h-screen bg-blue-700 text-white py-10 px-7 text-lg font-semibold gap-4 shadow-lg">
+            <a href="/user/dashboard" class="hover:bg-blue-600 py-2 px-3 rounded transition duration-200"><i
+                    class="fas fa-home"></i> Home</a>
+            <a href="/user/acceptedAppointments" class="hover:bg-blue-600 py-2 px-3 rounded transition duration-200"><i
+                    class="fas fa-calendar-alt"></i> Appointments</a>
+            <a href="/user/profile" class="hover:bg-blue-600 py-2 px-3 rounded transition duration-200"><i
+                    class="fas fa-user-edit"></i> Update Profile</a>
+            <a href="/logout" class="hover:bg-blue-600 py-2 px-3 rounded transition duration-200"><i
+                    class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+
+        <!-- Main content -->
+        <div class="flex-1 flex flex-col p-6">
+
+            <!-- Notification icon -->
+            <div class="flex">
+                <div class="flex items-center space-x-4">
+                    <h2 class="text-3xl font-semibold text-gray-800">Accepted Appointments</h2>
+                </div>
+                
+
+                <div class="flex w-full justify-end mb-4 md:mb-5">
+                    <a href="/user/notifications" class="relative">
+                        <i class="fas fa-bell text-gray-700 text-2xl hover:text-gray-500 transition duration-200"></i>
+                        <% if(notifications.some(n => n.status === 'unread')) { %>
+                            <span class="absolute top-0 right-0 block w-3 h-3 bg-red-600 rounded-full"></span>
+                        <% } %>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Appointments List -->
+            <div class="max-h-[80vh] overflow-y-auto  overflow-x-hidden space-y-6">
+
+
+                <% if (appointments.length> 0) { %>
+                    <% appointments.forEach((appointment)=> { %>
+                        <% if (appointment.type==='accepted' ) { %>
+                            <div
+                                class="bg-white rounded-lg shadow-lg p-6 mb-4 transition-transform transform hover:shadow-xl cursor-pointer">
+                                <h3 class="text-2xl font-semibold text-blue-600 mb-2">Dr. <%= appointment.doctorId.name
+                                        %>
+                                </h3>
+                                <p class="text-gray-700 text-lg">Specialist: <span class="font-semibold">
+                                        <%= appointment.doctorId.specialist %>
+                                    </span></p>
+                                <p class="text-gray-700 text-lg">Location: <span class="font-semibold">
+                                        <%= appointment.doctorId.address %>
+                                    </span></p>
+                                <p class="text-gray-700 text-lg">Contact: <span class="font-semibold">
+                                        <%= appointment.doctorId.contact %>
+                                    </span></p>
+                                <div class="flex justify-between mt-4">
+                                    <div>
+                                        <p class="text-gray-700">Appointment Date: <span class="font-semibold">
+                                                <%= appointment.appointmentId.appointmentTime.date %>
+                                            </span></p>
+                                        <p class="text-gray-700">Appointment Time: <span class="font-semibold">
+                                                <%= appointment.appointmentId.appointmentTime.time %>
+                                            </span></p>
+                                    </div>
+                                    <div>
+                                        <button
+                                            class="bg-green-500 text-white text-lg py-2 px-6 rounded-lg shadow-md hover:bg-green-600 transition duration-200">Appointment
+                                            Accepted</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <% } %>
+                                <% }) %>
+                                    <% } else { %>
+                                        <p class="text-gray-600 text-lg text-center mt-10">No accepted appointments
+                                            available at the moment.</p>
+                                        <% } %>
+            </div>
+
+        </div>
+    </div>
+
+    <%- include('partials/footer') %>

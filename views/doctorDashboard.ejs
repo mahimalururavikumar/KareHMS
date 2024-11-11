@@ -1,0 +1,124 @@
+<%- include('partials/header') %>
+
+<div class="flex flex-col md:flex-row min-h-screen bg-gray-100">
+    <div id="flash-messages" class="fixed top-4 right-4 z-50 space-y-2">
+        <% if (messages.success && messages.success.length > 0) { %>
+            <% messages.success.forEach(function(msg) { %>
+                <div class="flash-message bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded-lg shadow-md transition-opacity duration-500">
+                    <p><%= msg %></p>
+                </div>
+            <% }) %>
+        <% } %>
+    
+        <% if (messages.error && messages.error.length > 0) { %>
+            <% messages.error.forEach(function(msg) { %>
+                <div class="flash-message bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded-lg shadow-md transition-opacity duration-500">
+                    <p><%= msg %></p>
+                </div>
+            <% }) %>
+        <% } %>
+    </div>
+    <!-- Sidebar Navigation -->
+    <div class="flex flex-col w-full md:w-1/5 h-auto md:h-screen bg-blue-700 text-white py-10 px-7 text-lg font-semibold gap-4 shadow-md">
+        <a href="/doctor/dashboard" class="hover:bg-blue-600 py-2 px-3 rounded-lg transition duration-300"><i class="fas fa-home"></i>
+            <span>Home</span></a>
+        <a href="/doctor/appointments" class="hover:bg-blue-600 py-2 px-3 rounded-lg transition duration-300"><i class="fas fa-calendar-alt"></i> <span>Appointments</span>
+        </a>
+        <a href="/doctor/allAppointments" class="hover:bg-blue-600 py-2 px-3 rounded-lg transition duration-300"><i class="fas fa-calendar-check"></i>
+            Accepted Appointments</a>
+        <a href="/doctor/profile" class="hover:bg-blue-600 py-2 px-3 rounded-lg transition duration-300"><i class="fas fa-user-edit"></i>
+            Update Profile</a>
+        <a href="/logout" class="hover:bg-blue-600 py-2 px-3 rounded-lg transition duration-300"><i class="fas fa-sign-out-alt"></i>
+            Logout</a>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="flex-1 flex flex-col p-5 space-y-6">
+        <!-- Notifications Bell -->
+        <div class="flex w-full justify-end mb-6">
+            <a href="/doctor/notifications" class="relative hover:scale-110 transform transition duration-300">
+                <i class="fas fa-bell text-gray-700 text-3xl hover:text-gray-500"></i>
+                <% if (notifications.some(n => n.status === 'unread')) { %>
+                    <span class="absolute top-0 right-0 h-3 w-3 bg-red-500 rounded-full"></span>
+                <% } %>
+            </a>
+        </div>
+
+        <!-- Welcome Message -->
+        <div class="font-extrabold text-3xl text-blue-700">
+            Welcome, Dr. <%= doc.name %>!
+        </div>
+
+        <div class="max-h-[70vh] overflow-y-auto space-y-6">
+            <!-- Accepted Appointments Summary -->
+            <div class="bg-white p-6 rounded-xl shadow-lg transition hover:shadow-2xl hover:bg-blue-50">
+                <h3 class="text-2xl font-bold text-blue-700 mb-4">Accepted Appointments</h3>
+                <% if (acceptedAppointment.length > 0) { %>
+                    <ul class="space-y-3">
+                        <% acceptedAppointment.forEach(app => { %>
+                            <li class="p-5 bg-gray-50 rounded-lg border-l-4 border-blue-500">
+                                <p><strong>Patient ID:</strong> <%= app.userId %></p>
+                                <p><strong>Appointment ID:</strong> <%= app.appointmentId %></p>
+                            </li>
+                        <% }); %>
+                    </ul>
+                <% } else { %>
+                    <p class="text-gray-500">No accepted appointments at the moment.</p>
+                <% } %>
+            </div>
+
+            <!-- Upcoming Appointments -->
+            <div class="bg-white p-6 rounded-xl shadow-lg transition hover:shadow-2xl hover:bg-blue-50">
+                <h3 class="text-2xl font-bold text-blue-700 mb-4">Upcoming Appointments</h3>
+                <% if (appointments.length > 0) { %>
+                    <ul class="space-y-3">
+                        <% appointments.forEach(appointment => { %>
+                            <li class="p-4 bg-gray-50 rounded-lg border-l-4 border-green-500">
+                                <p><strong>Patient Name:</strong> <%= appointment.userName %></p>
+                                <p><strong>Date:</strong> <%= appointment.date %></p>
+                                <p><strong>Time:</strong> <%= appointment.time %></p>
+                                <p><strong>Duration:</strong> <%= appointment.duration %></p>
+                            </li>
+                        <% }); %>
+                    </ul>
+                <% } else { %>
+                    <p class="text-gray-500">No upcoming appointments scheduled.</p>
+                <% } %>
+            </div>
+
+            <!-- Profile Summary -->
+            <div class="bg-white p-6 rounded-xl shadow-lg transition hover:shadow-2xl hover:bg-blue-50">
+                <h3 class="text-2xl font-bold text-blue-700 mb-4">Profile Summary</h3>
+                <div class="text-gray-700 space-y-2">
+                    <p><strong>Name:</strong> <%= doc.name %></p>
+                    <p><strong>Email:</strong> <%= doc.email %></p>
+                    <p><strong>Contact:</strong> <%= doc.contact %></p>
+                    <p><strong>Address:</strong> <%= doc.address %></p>
+                    <p><strong>Specialist:</strong> <%= doc.specialist %></p>
+                    <p><strong>Experience:</strong> <%= doc.experience %> years</p>
+                    <p><strong>Fees:</strong> $<%= doc.fees %></p>
+                </div>
+            </div>
+
+            <!-- Notifications Section -->
+            <div class="bg-white p-6 rounded-xl shadow-lg transition hover:shadow-2xl hover:bg-blue-50">
+                <h3 class="text-2xl font-bold text-blue-700 mb-4">Notifications</h3>
+                <% if (notifications.length > 0) { %>
+                    <ul class="space-y-3">
+                        <% notifications.forEach(notification => { %>
+                            <li class="p-4 bg-gray-50 rounded-lg border-l-4 border-yellow-500">
+                                <p><strong>Message:</strong> <%= notification.message %></p>
+                                <p><strong>Status:</strong> <%= notification.status %></p>
+                                <p><strong>Date:</strong> <%= notification.date.toLocaleString() %></p>
+                            </li>
+                        <% }); %>
+                    </ul>
+                <% } else { %>
+                    <p class="text-gray-500">No notifications at the moment.</p>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('partials/footer') %>

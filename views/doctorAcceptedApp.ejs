@@ -1,0 +1,103 @@
+<%- include('partials/header') %>
+
+    <div class="flex min-h-screen bg-gray-100">
+        <div id="flash-messages" class="fixed top-4 right-4 z-50 space-y-2">
+            <% if (messages.success && messages.success.length > 0) { %>
+                <% messages.success.forEach(function(msg) { %>
+                    <div class="flash-message bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded-lg shadow-md transition-opacity duration-500">
+                        <p><%= msg %></p>
+                    </div>
+                <% }) %>
+            <% } %>
+        
+            <% if (messages.error && messages.error.length > 0) { %>
+                <% messages.error.forEach(function(msg) { %>
+                    <div class="flash-message bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded-lg shadow-md transition-opacity duration-500">
+                        <p><%= msg %></p>
+                    </div>
+                <% }) %>
+            <% } %>
+        </div>
+        <!-- Sidebar Navigation -->
+        <div
+            class="flex flex-col w-full md:w-1/5 h-auto md:h-screen bg-blue-700 text-white py-10 px-7 text-lg font-semibold gap-4 shadow-md">
+            <a href="/doctor/dashboard" class="hover:bg-blue-600 py-2 px-3 rounded-lg transition duration-300"><i
+                    class="fas fa-home"></i>
+                <span>Home</span></a>
+            <a href="/doctor/appointments" class="hover:bg-blue-600 py-2 px-3 rounded-lg transition duration-300"><i
+                    class="fas fa-calendar-alt"></i> <span>Appointments</span>
+            </a>
+            <a href="/doctor/allAppointments" class="hover:bg-blue-600 py-2 px-3 rounded-lg transition duration-300"><i
+                    class="fas fa-calendar-check"></i>
+                Accepted Appointments</a>
+            <a href="/doctor/profile" class="hover:bg-blue-600 py-2 px-3 rounded-lg transition duration-300"><i
+                    class="fas fa-user-edit"></i>
+                Update Profile</a>
+            <a href="/logout" class="hover:bg-blue-600 py-2 px-3 rounded-lg transition duration-300"><i
+                    class="fas fa-sign-out-alt"></i>
+                Logout</a>
+        </div>
+
+        <!-- Notifications Bell -->
+        <div class="flex-1 p-5">
+            <div class="flex absolute top-0 right-0 p-5">
+                <a href="/doctor/notifications" class="relative hover:scale-110 transform transition duration-300">
+                    <i class="fas fa-bell text-gray-700 text-3xl hover:text-gray-500"></i>
+                    <% if (notifications.some(n=> n.status === 'unread')) { %>
+                        <span class="absolute top-0 right-0 h-3 w-3 bg-red-500 rounded-full"></span>
+                        <% } %>
+                </a>
+            </div>
+
+
+            <!-- Main Content Area -->
+            <div class="p-8 flex-1">
+                <h2 class="text-3xl font-bold text-gray-700 mb-6">Accepted Appointments</h2>
+                <div class="max-h-[70vh] overflow-y-auto">
+                <% if (acceptedApp.length> 0) { %>
+                    <div class="space-y-6">
+                        <% acceptedApp.forEach(appointment=> { %>
+                            <div
+                                class="flex justify-between items-center bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-200 border-x-4 border-blue-500">
+                                <!-- Appointment Details -->
+                                <div class="space-y-2">
+                                    <p class="text-gray-700"><strong>Patient ID:</strong>
+                                        <%= appointment.userId %>
+                                    </p>
+                                    <p class="text-gray-700"><strong>Appointment ID:</strong>
+                                        <%= appointment.appointmentId._id %>
+                                    </p>
+                                    <p class="text-gray-700"><strong>Appointment Time:</strong>
+                                        <%= appointment.appointmentId.appointmentTime.date %>, <%=
+                                                appointment.appointmentId.appointmentTime.time %>
+                                    </p>
+                                    <p class="text-gray-700"><strong>Status:</strong>
+                                        <%= appointment.appointmentId.status %>
+                                    </p>
+                                </div>
+                                <!-- Complete Button -->
+                                <% if(appointment.appointmentId.status==='completed' ) {%>
+                                    <p
+                                        class="px-4 py-2 bg-green-500 text-white rounded-lg font-semibold hover:bg-green-600 transition duration-200">
+                                        Completed</p>
+                                    <% } else { %>
+                                        <form action="/doctor/completeAppointment/<%= appointment.appointmentId._id %>"
+                                            method="POST">
+                                            <button type="submit"
+                                                class="px-4 py-2 bg-yellow-500 text-white rounded-lg font-semibold hover:bg-yellow-600 transition duration-200">Mark
+                                                as Complete</button>
+                                        </form>
+                                        <% } %>
+                            </div>
+                            <% }); %>
+                    </div>
+                    <% } else { %>
+                        <p class="text-center text-gray-500 text-lg font-semibold mt-12">No accepted appointments at the
+                            moment.</p>
+                        <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%- include('partials/footer') %>

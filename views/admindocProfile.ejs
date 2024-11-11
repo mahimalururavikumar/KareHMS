@@ -1,0 +1,82 @@
+<%- include('partials/header') %>
+
+<div class="flex min-h-screen bg-gray-100">
+    <div id="flash-messages" class="fixed top-4 right-4 z-50 space-y-2">
+        <% if (messages.success && messages.success.length > 0) { %>
+            <% messages.success.forEach(function(msg) { %>
+                <div class="flash-message bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded-lg shadow-md transition-opacity duration-500">
+                    <p><%= msg %></p>
+                </div>
+            <% }) %>
+        <% } %>
+    
+        <% if (messages.error && messages.error.length > 0) { %>
+            <% messages.error.forEach(function(msg) { %>
+                <div class="flash-message bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded-lg shadow-md transition-opacity duration-500">
+                    <p><%= msg %></p>
+                </div>
+            <% }) %>
+        <% } %>
+    </div>
+    <!-- Sidebar -->
+    <div class="flex flex-col w-1/5 bg-blue-600 text-white py-8 px-5 space-y-6">
+        <!-- Logo and Admin Info -->
+        <div class="flex flex-col items-center">
+            <div class="w-16 h-16 rounded-full bg-white mb-4 shadow-md flex items-center justify-center text-blue-600 font-semibold">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="text-xl font-semibold">Welcome, <%= admin.name %></div>
+            <div class="text-sm text-gray-300"><%= admin.email %></div>
+        </div>
+
+        <!-- Sidebar Links -->
+        <nav class="space-y-4">
+            <a href="/admin/dashboard" class="flex items-center space-x-2 text-lg text-white hover:bg-blue-500 py-2 px-4 rounded transition">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="/admin/allDoctors" class="flex items-center space-x-2 text-lg text-white hover:bg-blue-500 py-2 px-4 rounded transition">
+                <i class="fas fa-user-md"></i>
+                <span>All Doctors</span>
+            </a>
+            <a href="/admin/allUsers" class="flex items-center space-x-2 text-lg text-white hover:bg-blue-500 py-2 px-4 rounded transition">
+                <i class="fas fa-users"></i>
+                <span>All Users</span>
+            </a>
+            <a href="/admin/requests" class="flex items-center space-x-2 text-lg text-white hover:bg-blue-500 py-2 px-4 rounded transition">
+                <i class="fas fa-clipboard-list"></i>
+                <span>Requests</span>
+            </a>
+            <a href="/logout" class="flex items-center space-x-2 text-lg text-white hover:bg-blue-500 py-2 px-4 rounded transition">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    
+    <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-8">
+        <h2 class="text-3xl font-semibold text-center text-blue-600 mb-4">Doctor Profile</h2>
+
+        <!-- Doctor Details Section -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Basic Information -->
+            <div>
+                <h3 class="text-xl font-semibold mb-2 text-blue-500">Basic Information</h3>
+                <p><strong>Name:</strong> <%= doctor.name %></p>
+                <p><strong>Email:</strong> <%= doctor.email %></p>
+                <p><strong>Contact:</strong> <%= doctor.contact %></p>
+                <p><strong>Address:</strong> <%= doctor.address %></p>
+                <p><strong>Specialization:</strong> <%= doctor.specialist %></p>
+                <p><strong>Degree:</strong> <%= doctor.degree %></p>
+                <p><strong>Experience:</strong> <%= doctor.experience %> years</p>
+                <p><strong>Fees:</strong> ₹<%= doctor.fees %></p>
+                <h3 class="text-xl font-semibold mb-2 mt-3 text-blue-500">Availability</h3>
+                <p><strong>Working Hours:</strong> <%= doctor.timings.start %> - <%= doctor.timings.end %></p>
+            </div>
+        </div>
+    </div>
+
+
+<%- include('partials/footer') %>

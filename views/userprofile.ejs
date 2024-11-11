@@ -1,0 +1,87 @@
+<%- include('partials/header') %>
+
+<div class="flex flex-col md:flex-row min-h-screen bg-gray-100">
+    <div id="flash-messages" class="fixed top-4 right-4 z-50 space-y-2">
+        <% if (messages.success && messages.success.length > 0) { %>
+            <% messages.success.forEach(function(msg) { %>
+                <div class="flash-message bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded-lg shadow-md transition-opacity duration-500">
+                    <p><%= msg %></p>
+                </div>
+            <% }) %>
+        <% } %>
+    
+        <% if (messages.error && messages.error.length > 0) { %>
+            <% messages.error.forEach(function(msg) { %>
+                <div class="flash-message bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded-lg shadow-md transition-opacity duration-500">
+                    <p><%= msg %></p>
+                </div>
+            <% }) %>
+        <% } %>
+    </div>
+    <!-- Sidebar -->
+    <div class="flex flex-col w-full md:w-1/5 h-auto md:h-screen bg-blue-700 text-white py-10 px-7 text-lg font-semibold gap-4 shadow-lg">
+        <a href="/user/dashboard" class="hover:bg-blue-600 py-2 px-3 rounded transition duration-200"><i class="fas fa-home"></i> Home</a>
+        <a href="/user/acceptedAppointments" class="hover:bg-blue-600 py-2 px-3 rounded transition duration-200"><i class="fas fa-calendar-alt"></i> Appointments</a>
+        <a href="/user/profile" class="hover:bg-blue-600 py-2 px-3 rounded transition duration-200"><i class="fas fa-user-edit"></i> Update Profile</a>
+        <a href="/logout" class="hover:bg-blue-600 py-2 px-3 rounded transition duration-200"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+
+    <!-- Main content -->
+    <div class="flex-1 flex flex-col items-center p-5 max-h-[80vh]">
+
+        <!-- Notification icon -->
+        <div class="flex w-full justify-end mb-4 md:mb-5">
+            <a href="/user/notifications" class="relative">
+                <i class="fas fa-bell text-gray-700 text-2xl hover:text-gray-500 transition duration-200"></i>
+                <% if(notifications.some(n => n.status === 'unread')) { %>
+                    <span class="absolute top-0 right-0 block w-3 h-3 bg-red-600 rounded-full"></span>
+                <% } %>
+            </a>
+        </div>
+
+        <!-- Profile section -->
+        <div class="w-full max-w-3xl bg-white rounded-lg shadow-lg p-8">
+            <h2 class="text-3xl font-semibold mb-6 text-center text-blue-600">User Profile</h2>
+
+            <!-- Editable profile form -->
+            <form action="/user/updateProfile" method="POST" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="flex flex-col">
+                        <label class="font-semibold text-gray-700">Name</label>
+                        <input type="text" name="name" value="<%= user.name %>" 
+                            class="border-2 border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200" required>
+                    </div>
+
+                    <div class="flex flex-col">
+                        <label class="font-semibold text-gray-700">Email</label>
+                        <input type="email" name="email" value="<%= user.email %>" 
+                            class="border-2 border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200" required>
+                    </div>
+                </div>
+
+                <div class="flex flex-col">
+                    <label class="font-semibold text-gray-700">Contact</label>
+                    <input type="text" name="contact" value="<%= user.contact || '' %>" 
+                        class="border-2 border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200" 
+                        placeholder="Enter your contact number">
+                </div>
+
+                <div class="flex flex-col">
+                    <label class="font-semibold text-gray-700">Password</label>
+                    <input type="password" name="password" placeholder="Change your password"
+                        class="border-2 border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200">
+                </div>
+
+                <!-- Update button -->
+                <div class="flex justify-center">
+                    <button type="submit"
+                        class="w-full mt-6 bg-blue-500 text-white py-3 rounded-md font-semibold hover:bg-blue-600 transition duration-200">
+                        Update Profile
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<%- include('partials/footer') %>

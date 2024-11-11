@@ -1,0 +1,120 @@
+<%- include('partials/header') %>
+
+<div class="flex min-h-screen bg-gray-50">
+    <div id="flash-messages" class="fixed top-4 right-4 z-50 space-y-2">
+        <% if (messages.success && messages.success.length > 0) { %>
+            <% messages.success.forEach(function(msg) { %>
+                <div class="flash-message bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded-lg shadow-md transition-opacity duration-500">
+                    <p><%= msg %></p>
+                </div>
+            <% }) %>
+        <% } %>
+    
+        <% if (messages.error && messages.error.length > 0) { %>
+            <% messages.error.forEach(function(msg) { %>
+                <div class="flash-message bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded-lg shadow-md transition-opacity duration-500">
+                    <p><%= msg %></p>
+                </div>
+            <% }) %>
+        <% } %>
+    </div>
+    <!-- Sidebar -->
+    <div class="flex flex-col w-full md:w-1/5 h-auto md:h-screen bg-blue-700 text-white py-10 px-7 text-lg font-semibold gap-4 shadow-md">
+        <a href="/doctor/dashboard" class="hover:bg-blue-600 py-2 px-3 rounded-lg transition duration-300"><i class="fas fa-home"></i>
+            <span>Home</span></a>
+        <a href="/doctor/appointments" class="hover:bg-blue-600 py-2 px-3 rounded-lg transition duration-300"><i class="fas fa-calendar-alt"></i> <span>Appointments</span>
+        </a>
+        <a href="/doctor/allAppointments" class="hover:bg-blue-600 py-2 px-3 rounded-lg transition duration-300"><i class="fas fa-calendar-check"></i>
+            Accepted Appointments</a>
+        <a href="/doctor/profile" class="hover:bg-blue-600 py-2 px-3 rounded-lg transition duration-300"><i class="fas fa-user-edit"></i>
+            Update Profile</a>
+        <a href="/logout" class="hover:bg-blue-600 py-2 px-3 rounded-lg transition duration-300"><i class="fas fa-sign-out-alt"></i>
+            Logout</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-1 p-5">
+        <div class="flex absolute top-0 right-0 p-5">
+            <a href="/doctor/notifications" class="relative hover:scale-110 transform transition duration-300">
+                <i class="fas fa-bell text-gray-700 text-3xl hover:text-gray-500"></i>
+                <% if (notifications.some(n => n.status === 'unread')) { %>
+                    <span class="absolute top-0 right-0 h-3 w-3 bg-red-500 rounded-full"></span>
+                <% } %>
+            </a>
+        </div>
+
+        <!-- Profile Update Form -->
+        <div class="w-full max-w-4xl bg-white rounded-lg shadow-lg p-8 mx-auto border-l-4 border-blue-500">
+            <h2 class="text-4xl font-semibold text-center text-blue-600 mb-8">Update Profile</h2>
+            <p class="text-center text-gray-600 mb-8">Keep your profile details up to date for patients to view</p>
+            <div class="max-h-[60vh] overflow-y-auto">
+            <form action="/doctor/updateProfile" method="POST" class="space-y-8">
+                
+                <!-- Name & Email -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="flex flex-col">
+                        <label for="name" class="font-semibold text-gray-700">Name</label>
+                        <input type="text" name="name" placeholder="Dr. John Doe" value="<%= doctor.name %>" required
+                            class="border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                    </div>
+                    <div class="flex flex-col">
+                        <label for="email" class="font-semibold text-gray-700">Email</label>
+                        <input type="email" name="email" placeholder="example@example.com" value="<%= doctor.email %>" required
+                            class="border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                    </div>
+                </div>
+
+                <!-- Contact & Fees -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="flex flex-col">
+                        <label for="contact" class="font-semibold text-gray-700">Contact No</label>
+                        <input type="tel" name="contact" placeholder="+1234567890" value="<%= doctor.contact %>" required
+                            class="border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                    </div>
+                    <div class="flex flex-col">
+                        <label for="fees" class="font-semibold text-gray-700">Consultation Fees</label>
+                        <input type="number" name="fees" placeholder="Enter your fees" value="<%= doctor.fees %>" required
+                            class="border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                    </div>
+                </div>
+
+                <!-- Experience & Address -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="flex flex-col">
+                        <label for="experience" class="font-semibold text-gray-700">Experience (in years)</label>
+                        <input type="number" name="experience" placeholder="Years of experience" value="<%= doctor.experience %>" required
+                            class="border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                    </div>
+                    <div class="flex flex-col">
+                        <label for="address" class="font-semibold text-gray-700">Clinic Address</label>
+                        <textarea name="address" placeholder="Enter clinic address" required
+                            class="border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"><%= doctor.address %></textarea>
+                    </div>
+                </div>
+
+                <!-- Timings -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="flex flex-col">
+                        <label for="timings[start]" class="font-semibold text-gray-700">Available From</label>
+                        <input type="time" name="timings[start]" value="<%= doctor.timings.start %>" required
+                            class="border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                    </div>
+                    <div class="flex flex-col">
+                        <label for="timings[end]" class="font-semibold text-gray-700">Available Until</label>
+                        <input type="time" name="timings[end]" value="<%= doctor.timings.end %>" required
+                            class="border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit"
+                    class="w-full bg-gradient-to-r from-blue-500 to-blue-700 text-white py-3 rounded-md font-semibold hover:from-blue-600 hover:to-blue-800 transition duration-200">
+                    Update Profile
+                </button>
+            </form>
+        </div>
+        </div>
+    </div>
+</div>
+
+<%- include('partials/footer') %>
