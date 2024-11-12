@@ -1,0 +1,41 @@
+<%- include('partials/header') %>
+
+<div class="mt-10 mx-10">
+    <a href="/doctor/doctorApplication"
+       class="p-3 bg-green-600 text-white rounded-md cursor-pointer hover:bg-green-700 transition-colors font-medium text-sm sm:text-base">
+       Back 👈
+    </a>
+</div>
+
+<div class="flex flex-1 flex-col px-10 space-y-6">
+    <!-- Notification Bell Icon -->
+    <div class="flex w-full justify-end mb-4">
+        <a href="/doctor/notifications" class="relative hover:scale-110 transform transition duration-300">
+            <i class="fas fa-bell text-gray-700 text-3xl hover:text-gray-500"></i>
+            <% if (notifications.some(n => n.status === 'unread')) { %>
+                <span class="absolute top-0 right-0 h-3 w-3 bg-red-500 rounded-full"></span>
+            <% } %>
+        </a>
+    </div>
+
+    <!-- Notifications Section -->
+    <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-3xl mx-auto border-l-4 border-blue-500">
+        <h2 class="text-3xl font-semibold mb-6 text-center text-blue-600">Notifications</h2>
+        
+        <div class="max-h-[60vh] overflow-y-auto">
+            <% if (notifications.length > 0) { %>
+                <div class="space-y-4">
+                    <% notifications.slice().reverse().forEach(notification => { %>
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center bg-gray-50 p-4 rounded-lg shadow-sm hover:bg-blue-50 transition duration-200">
+                            <p class="text-gray-800 flex-1"><%= notification.message %></p>
+                        </div>
+                    <% }) %>
+                </div>
+            <% } else { %>
+                <p class="text-center text-gray-500 text-lg font-semibold mt-8">No new notifications at the moment.</p>
+            <% } %>
+        </div>
+    </div>
+</div>
+
+<%- include('partials/footer') %>

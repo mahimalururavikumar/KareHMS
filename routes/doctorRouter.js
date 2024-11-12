@@ -46,6 +46,12 @@ router.get("/profile", isDoctor, (req, res) => {
   res.render("doctorProfile",{doctor, notifications: doctor.notifications , messages});
 });
 
+router.get('/UdocNotifications',isDoctor,(req, res) => {
+  let doctor = req.doctor;
+  const notifications = doctor.notifications;
+  res.render('UdocNotification',{notifications});
+});
+
 router.get("/allAppointments", isDoctor, allappointments);
 
 router.get("/appointments", isDoctor, appointments);

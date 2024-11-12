@@ -1,6 +1,7 @@
 <%- include('partials/header') %>
 
 <div class="flex flex-col md:flex-row min-h-screen bg-gray-100">
+    <!-- Flash Messages -->
     <div id="flash-messages" class="fixed top-4 right-4 z-50 space-y-2">
         <% if (messages.success && messages.success.length > 0) { %>
             <% messages.success.forEach(function(msg) { %>
@@ -9,7 +10,7 @@
                 </div>
             <% }) %>
         <% } %>
-    
+
         <% if (messages.error && messages.error.length > 0) { %>
             <% messages.error.forEach(function(msg) { %>
                 <div class="flash-message bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded-lg shadow-md transition-opacity duration-500">
@@ -18,18 +19,21 @@
             <% }) %>
         <% } %>
     </div>
-    <!-- Sidebar Navigation -->
-    <div class="flex flex-col w-full md:w-1/5 h-auto md:h-screen bg-blue-700 text-white py-10 px-7 text-lg font-semibold gap-4 shadow-md">
-        <a href="/doctor/dashboard" class="hover:bg-blue-600 py-2 px-3 rounded-lg transition duration-300"><i class="fas fa-home"></i>
-            <span>Home</span></a>
-        <a href="/doctor/appointments" class="hover:bg-blue-600 py-2 px-3 rounded-lg transition duration-300"><i class="fas fa-calendar-alt"></i> <span>Appointments</span>
-        </a>
-        <a href="/doctor/allAppointments" class="hover:bg-blue-600 py-2 px-3 rounded-lg transition duration-300"><i class="fas fa-calendar-check"></i>
-            Accepted Appointments</a>
-        <a href="/doctor/profile" class="hover:bg-blue-600 py-2 px-3 rounded-lg transition duration-300"><i class="fas fa-user-edit"></i>
-            Update Profile</a>
-        <a href="/logout" class="hover:bg-blue-600 py-2 px-3 rounded-lg transition duration-300"><i class="fas fa-sign-out-alt"></i>
-            Logout</a>
+
+    <!-- Sidebar Navigation (Collapsible on small screens) -->
+    <div class="flex flex-col w-full md:w-1/5 h-screen bg-blue-700 text-white text-lg font-semibold transform md:relative transition-transform duration-300" id="sidebar">
+        <a href="/doctor/dashboard" class="md:mt-10 hover:bg-blue-600 py-2 px-3 rounded-lg transition duration-300"><i class="fas fa-home"></i>    <span>Home</span></a>
+        <a href="/doctor/appointments" class=" hover:bg-blue-600 py-2 px-3 rounded-lg transition duration-300"><i class="fas fa-calendar-alt"></i>       <span>Appointments</span></a>
+        <a href="/doctor/allAppointments" class="hover:bg-blue-600 py-2 px-3 rounded-lg transition duration-300"><i class="fas fa-calendar-check"></i>      Accepted Appointments</a>
+        <a href="/doctor/profile" class="hover:bg-blue-600 py-2 px-3 rounded-lg transition duration-300"><i class="fas fa-user-edit"></i>       Update Profile</a>
+        <a href="/logout" class="hover:bg-blue-600 py-2 px-3 rounded-lg transition duration-300"><i class="fas fa-sign-out-alt"></i>      Logout</a>
+    </div>
+
+    <!-- Hamburger Menu for Small Screens -->
+    <div class="md:hidden fixed top-4 right-4 z-50">
+        <button id="hamburger-menu" class="text-white text-3xl focus:outline-none">
+            <i class="fas fa-bars"></i>
+        </button>
     </div>
 
     <!-- Main Content Area -->
@@ -122,3 +126,13 @@
 </div>
 
 <%- include('partials/footer') %>
+
+<!-- Script to handle the sidebar toggle on small devices -->
+<script>
+    const hamburgerMenu = document.getElementById('hamburger-menu');
+    const sidebar = document.getElementById('sidebar');
+    hamburgerMenu.addEventListener('click', () => {
+        sidebar.classList.toggle('transform');
+        sidebar.classList.toggle('-translate-x-full');
+    });
+</script>
