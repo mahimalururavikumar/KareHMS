@@ -12,6 +12,7 @@ import {
   appointmentCompleted,
   updateProfile
 } from "../controller/doctorController.js";
+import upload from "../config/multer.js";
 
 router.get("/dashboard", isDoctor, dashBoard);
 
@@ -34,7 +35,7 @@ router.get("/notifications", isDoctor, async (req, res) => {
   });
   await doctor.save();
   let notifications = doctor.notifications;
-  res.render("doctorNotifications", { notifications ,messages});
+  res.render("doctorNotifications", { notifications ,messages,doctor});
 });
 
 router.get("/profile", isDoctor, (req, res) => {
@@ -66,6 +67,6 @@ router.post("/register", register);
 
 router.post("/completeAppointment/:id", isDoctor, appointmentCompleted);
 
-router.post('/updateProfile', isDoctor , updateProfile);
+router.post('/updateProfile', isDoctor ,upload.single('image'), updateProfile);
 
 export default router;

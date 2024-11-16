@@ -20,13 +20,24 @@
     </div>
 
     <!-- Sidebar Navigation -->
-    <div class="flex flex-col w-full md:w-1/5 h-screen bg-blue-700 text-white text-lg font-semibold transform md:relative transition-transform duration-300" id="sidebar">
-        <a href="/doctor/dashboard" class="md:mt-10 hover:bg-blue-600 py-2 px-3 rounded-lg transition duration-300"><i class="fas fa-home"></i>    <span>Home</span></a>
+    <div class="flex flex-col w-full md:w-1/5 h-screen bg-blue-700 text-white text-lg font-semibold transform md:relative transition-transform duration-300 py-8 px-5 space-y-6">
+        <!-- Logo and Admin Info -->
+        <div class="flex flex-col items-center">
+            <div class="w-20 h-20 rounded-full bg-white mb-4 shadow-md flex items-center justify-center text-blue-600 font-semibold">
+                <img class="rounded-full" src="/images/<%= doctor.image %>" alt="image" />
+            </div>
+            <div class="text-xl font-semibold">Welcome, <%= doctor.name %></div>
+            <div class="text-sm text-gray-300"><%= doctor.email %></div>
+        </div>
+    <div class="flex flex-col" id="sidebar">
+        <a href="/doctor/dashboard" class=" hover:bg-blue-600 py-2 px-3 rounded-lg transition duration-300"><i class="fas fa-home"></i>    <span>Home</span></a>
         <a href="/doctor/appointments" class=" hover:bg-blue-600 py-2 px-3 rounded-lg transition duration-300"><i class="fas fa-calendar-alt"></i>       <span>Appointments</span></a>
         <a href="/doctor/allAppointments" class="hover:bg-blue-600 py-2 px-3 rounded-lg transition duration-300"><i class="fas fa-calendar-check"></i>      Accepted Appointments</a>
         <a href="/doctor/profile" class="hover:bg-blue-600 py-2 px-3 rounded-lg transition duration-300"><i class="fas fa-user-edit"></i>       Update Profile</a>
         <a href="/logout" class="hover:bg-blue-600 py-2 px-3 rounded-lg transition duration-300"><i class="fas fa-sign-out-alt"></i>      Logout</a>
     </div>
+    </div>
+
 
     <!-- Hamburger Menu for Small Screens -->
     <div class="md:hidden fixed top-4 left-4 z-50">

@@ -155,6 +155,7 @@ const appointments = async (req, res) => {
       appointments,
       notifications: doctor.notifications,
       messages,
+      doctor
     });
   } catch (error) {
     req.flash("error", "something went wrong" + error.message);
@@ -239,27 +240,29 @@ const acceptAppointment = async (req, res) => {
 };
 
 const allappointments = async (req, res) => {
-  let doctor = req.doctor;
+  let doc = req.doctor;
   const messages = {
     successs: req.flash("success"),
     error: req.flash("error"),
   };
   try {
-    let doc = await doctorModel
-      .findById(doctor._id)
+    let doctor = await doctorModel
+      .findById(doc._id)
       .populate("acceptedAppointment.appointmentId");
 
-    if (!doc) {
+    if (!doctor) {
       req.flash("error", "Doctor not Found");
       console.log("Doctor details not found");
       return res.redirect("/doctor/dashboard");
     }
 
-    let acceptedApp = doc.acceptedAppointment;
+    let acceptedApp = doctor.acceptedAppointment;
     res.render("doctorAcceptedApp", {
       acceptedApp,
       notifications: doctor.notifications,
       messages,
+      doctor
+      
     });
   } catch (error) {
     req.flash("error", "Unable to fetch Appointments Detail: " + error.message);
@@ -284,6 +287,7 @@ const dashBoard = async (req, res) => {
     appointments,
     notifications,
     messages,
+    doctor
   });
 };
 
@@ -313,6 +317,7 @@ const appointmentCompleted = async (req, res) => {
 
 const updateProfile = async (req, res) => {
   const { name, email, contact, fees, experience, address, timings } = req.body;
+  const image  = req.file ? req.file.filename : undefined;
 
   try {
     if (!timings || !timings.start || !timings.end) {
@@ -323,6 +328,7 @@ const updateProfile = async (req, res) => {
       name,
       email,
       contact,
+      image,
       fees,
       experience,
       address,

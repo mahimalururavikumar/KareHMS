@@ -44,6 +44,7 @@ const registerUser = async (req, res) => {
 };
 
 const appointmentPage = async (req, res) => {
+  let user = req.user;
   try {
     const messages = {
       successs : req.flash('success'),
@@ -55,7 +56,7 @@ const appointmentPage = async (req, res) => {
       req.flash("error", "sorry unable to fetch the doctor details");
       return res.redirect("/user/dashboard");
     }
-    res.render("bookAppointment", { doctor , messages});
+    res.render("bookAppointment", { doctor , messages ,user});
   } catch (error) {
     req.flash("error", "something went wrong" + error.message);
     return res.redirect("/user/dashboard");
@@ -133,7 +134,7 @@ const acceptedAppointments = async (req, res) => {
       return res.redirect('/user/dashboard')
     }
     let appointments = User.appointments;
-    res.render('userAppointments',{appointments, notifications: User.notification,messages});
+    res.render('userAppointments',{appointments, notifications: User.notification,messages,user});
   } catch (error) {
     req.flash('error','Unable to fetch the Data'+error.message);
     res.redirect('/user/dashboard');
@@ -142,9 +143,12 @@ const acceptedAppointments = async (req, res) => {
 
 const updateProfile = async (req, res) => {
   const { name, email, contact, password } = req.body;
+  const image = req.file ? req.file.filename : undefined;
+  console.log(image);
+
 
   try {
-    const updateData = { name, email, contact };
+    const updateData = { name, email, contact ,image};
 
     if (password) {
       const salt = await bcrypt.genSalt(12);
@@ -185,7 +189,7 @@ const notifications =  async (req, res) => {
     }
   });
   await user.save();
-  res.render("userNotification", { notifications: user.notification ,messages});
+  res.render("userNotification", { notifications: user.notification ,messages, user});
 }
 
 export { registerUser, appointmentPage, bookAppointment, acceptedAppointments , updateProfile , notifications };

@@ -18,6 +18,10 @@ const doctotSchema = new mongoose.Schema({
   contact: {
     type: String,
   },
+  image : {
+    type: String,
+    default: 'default_img.png'
+  },
   acceptedAppointment: [
     {
       appointmentId: {

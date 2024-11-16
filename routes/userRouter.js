@@ -8,6 +8,7 @@ import {
   updateProfile,
   notifications
 } from "../controller/userController.js";
+import upload from "../config/multer.js";
 import { isAuthenticated } from "../middleware/isAuthenticated.js";
 import userModel from "../models/user-model.js";
 import doctorModel from "../models/doctor-model.js";
@@ -19,7 +20,7 @@ router.get("/dashboard", isAuthenticated ,async (req, res) => {
   };
   let user = req.user;
   let doctors = await doctorModel.find();
-  res.render("user", { doctors ,notifications: user.notification,messages});
+  res.render("user", { doctors ,notifications: user.notification,messages,user});
 });
 
 router.get("/profile", isAuthenticated, async (req, res) => {
@@ -48,6 +49,6 @@ router.post("/register", registerUser);
 
 router.post("/appointmentBooked/:id", isAuthenticated, bookAppointment);
 
-router.post('/updateProfile', isAuthenticated,updateProfile);
+router.post('/updateProfile', isAuthenticated,upload.single('image'),updateProfile);
 
 export default router;

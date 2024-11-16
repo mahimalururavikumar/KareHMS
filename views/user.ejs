@@ -19,10 +19,25 @@
         <% } %>
     </div>
     <div class="flex flex-col w-full md:w-1/5 h-auto md:h-screen bg-blue-700 text-white py-10 px-7 text-lg font-semibold gap-4 shadow-lg">
-        <a href="/user/dashboard" class="hover:bg-blue-600 py-2 px-3 rounded transition duration-200"><i class="fas fa-home"></i> Home</a>
-        <a href="/user/acceptedAppointments" class="hover:bg-blue-600 py-2 px-3 rounded transition duration-200"><i class="fas fa-calendar-alt"></i> Appointments</a>
-        <a href="/user/profile" class="hover:bg-blue-600 py-2 px-3 rounded transition duration-200"><i class="fas fa-user-edit"></i> Update Profile</a>
-        <a href="/logout" class="hover:bg-blue-600 py-2 px-3 rounded transition duration-200"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        <!-- Logo and Admin Info -->
+        <div class="flex flex-col items-center">
+            <div class="w-20 h-20 rounded-full bg-white mb-4 shadow-md flex items-center justify-center text-blue-600 font-semibold">
+                <img class="rounded-full" src="/images/<%= user.image %>" alt="image" />
+            </div>
+            <div class="text-xl font-semibold">Welcome, <%= user.name %></div>
+            <div class="text-sm text-gray-300"><%= user.email %></div>
+        </div>
+    <div
+        class="flex flex-col">
+        <a href="/user/dashboard" class="hover:bg-blue-600 py-2 px-3 rounded transition duration-200"><i
+                class="fas fa-home"></i> Home</a>
+        <a href="/user/acceptedAppointments" class="hover:bg-blue-600 py-2 px-3 rounded transition duration-200"><i
+                class="fas fa-calendar-alt"></i> Appointments</a>
+        <a href="/user/profile" class="hover:bg-blue-600 py-2 px-3 rounded transition duration-200"><i
+                class="fas fa-user-edit"></i> Update Profile</a>
+        <a href="/logout" class="hover:bg-blue-600 py-2 px-3 rounded transition duration-200"><i
+                class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
     </div>
 
     <!-- Main content -->
@@ -45,19 +60,20 @@
                     <% if(doctor.isDoctor === true) { %>
                         <div class="bg-white rounded-lg shadow-lg p-6 transform transition-transform  hover:shadow-2xl cursor-pointer"
                             onclick="window.location.href='/user/bookAppointment/<%= doctor._id %>'">
-                            <div class="flex flex-col md:flex-row items-start md:items-center gap-4">
+                            <div class="flex flex-col md:flex-row items-start md:items-center justify-between">
                                 <div class="md:w-2/3 border-l-4 border-blue-500 p-3 rounded-md">
                                     <h3 class="text-2xl font-bold text-blue-600 mb-2"><%= doctor.name %></h3>
                                     <p class="text-gray-700"><span class="font-semibold">Specialization:</span> <%= doctor.specialist %></p>
                                     <p class="text-gray-700"><span class="font-semibold">Degree:</span> <%= doctor.degree %></p>
                                     <p class="text-gray-700"><span class="font-semibold">Experience:</span> <%= doctor.experience %> years</p>
                                     <p class="text-gray-700"><span class="font-semibold">Location:</span> <%= doctor.address %></p>
-                                </div>
-                                <div class="md:w-1/3 text-center md:text-right mt-4 md:mt-0">
-                                    <p class="text-red-500 font-bold text-lg">Consultation Fee: $<%= doctor.fees %></p>
+                                    <p class="text-red-500 font-bold text-lg mt-5">Consultation Fee: $<%= doctor.fees %></p>
                                     <button class="w-full md:w-auto mt-4 bg-blue-500 text-white py-2 px-5 rounded-lg font-semibold hover:bg-blue-600 transition duration-200 transform hover:scale-105 shadow-md">
                                         Book Appointment
                                     </button>
+                                </div>
+                                <div class="w-44 text-center md:text-right mt-4 md:mt-0">
+                                    <img class="border-4 border-gray-500 rounded-full" src="/images/<%= doctor.image %>" alt=""/>
                                 </div>
                             </div>
                         </div>
